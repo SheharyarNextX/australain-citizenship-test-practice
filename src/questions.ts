@@ -1500,7 +1500,7 @@ const GOVERNOR_GENERAL_QUESTIONS: Question[] = GOVERNOR_GENERAL_DUTIES.flatMap((
     id: `governor-general-duty-${index + 1}`,
     category: 'Government and Law',
     prompt: 'Which of these is a role of the Governor-General?',
-    options: [duty, ...otherOptions(duty, GOVERNOR_GENERAL_DUTIES)],
+    options: [duty, 'choosing voters in federal elections', 'deciding court cases', 'leading the Opposition'],
     answerIndex: 0,
     explanation: `The Governor-General's role includes ${duty}.`,
   },
@@ -1703,7 +1703,5 @@ export const QUESTIONS: Question[] = [
   ...CAPITAL_QUESTIONS,
   ...ROLE_QUESTIONS,
   ...RESPONSIBILITY_QUESTIONS,
-  ...GLOSSARY_QUESTIONS,
   ...GOVERNOR_GENERAL_QUESTIONS,
-  ...DEEP_FACT_QUESTIONS,
 ];
