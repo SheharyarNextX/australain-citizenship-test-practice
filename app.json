@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "Australain Citizenship Test Practice",
+    "slug": "australain-citizenship-test-practice",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "australaincitizenshippractice",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#113A5D"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "au.softwarehouse.australaincitizenshippractice",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "au.softwarehouse.australaincitizenshippractice",
+      "adaptiveIcon": {
+        "backgroundColor": "#113A5D",
+        "foregroundImage": "./assets/icon.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-font"
+    ]
+  }
+}
