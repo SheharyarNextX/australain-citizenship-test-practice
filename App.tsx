@@ -76,6 +76,13 @@ function shuffle<T>(items: T[]): T[] {
 function shuffleOptions(question: Question): Question {
   const correctOption = question.options[question.answerIndex];
   const shuffledOptions = shuffle(question.options);
+  const shuffledCorrectIndex = shuffledOptions.indexOf(correctOption);
+
+  if (shuffledCorrectIndex === 0 && shuffledOptions.length > 1) {
+    const targetIndex = Math.floor(Math.random() * (shuffledOptions.length - 1)) + 1;
+    [shuffledOptions[0], shuffledOptions[targetIndex]] = [shuffledOptions[targetIndex], shuffledOptions[0]];
+  }
+
   return {
     ...question,
     options: shuffledOptions,

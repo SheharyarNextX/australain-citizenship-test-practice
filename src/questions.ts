@@ -1369,15 +1369,67 @@ function otherOptions(correct: string, pool: string[], count = 3) {
   return pool.filter((item) => item !== correct).slice(0, count);
 }
 
-function makeFactQuestions(prefix: string, facts: Array<{ prompt: string; answer: string; category: QuestionCategory }>): Question[] {
-  const answerPool = facts.map((fact) => fact.answer);
+const FACT_DISTRACTORS: Record<QuestionCategory, string[]> = {
+  'Test Rules': ['It is optional', 'It is decided by each local council', 'It applies only to people born in Australia'],
+  'Australia and its People': [
+    'It happened before European settlement',
+    'It applies only to one state',
+    'It is not part of the testable booklet',
+    'It is controlled by local councils',
+  ],
+  'Symbols and Days': [
+    'It is a state-only symbol',
+    'It represents local government',
+    'It is used only during elections',
+    'It is not officially recognised',
+  ],
+  'Democratic Beliefs': [
+    'People do not need to obey the law',
+    'Only government leaders have this right',
+    'It applies only during elections',
+    'It is decided by religious law',
+  ],
+  Citizenship: [
+    'It is optional for all citizens',
+    'It applies only to permanent residents',
+    'It replaces the need to obey Australian law',
+    'It is handled by local councils only',
+  ],
+  'Government and Law': [
+    'It is decided by the Prime Minister alone',
+    'It is controlled by local councils only',
+    'It cannot be changed by Australian voters',
+    'It is based on religious law',
+  ],
+  'Australian Values': [
+    'It is acceptable only in private',
+    'It applies only to Australian-born citizens',
+    'It means people do not need to obey the law',
+    'It is not consistent with Australian values',
+  ],
+};
+
+const BOOLEAN_DISTRACTORS = ['No', 'Only in some private situations', 'Only if nobody complains'];
+
+function makeFactQuestions(
+  prefix: string,
+  facts: Array<{ prompt: string; answer: string; category: QuestionCategory }>,
+  distractors?: string[],
+): Question[] {
+  const nonBooleanAnswers = facts.map((item) => item.answer).filter((answer) => answer !== 'Yes' && answer !== 'No');
   return facts.map((fact, index) => {
     const prompt = fact.prompt.endsWith('?') ? fact.prompt : `Which statement about ${fact.prompt} is correct?`;
+    const pool =
+      fact.answer === 'Yes'
+        ? BOOLEAN_DISTRACTORS
+        : fact.answer === 'No'
+          ? ['Yes', 'Only in some private situations', 'Only if nobody complains']
+          : distractors ?? (nonBooleanAnswers.length >= 3 ? nonBooleanAnswers : FACT_DISTRACTORS[fact.category]);
     return {
       id: `${prefix}-${index + 1}-direct`,
       category: fact.category,
       prompt,
-      options: [fact.answer, ...otherOptions(fact.answer, answerPool)],
+      options: [fact.answer, ...otherOptions(fact.answer, pool, 2)],
       answerIndex: 0,
       explanation: fact.answer,
       valuesQuestion: fact.category === 'Australian Values',
