@@ -1172,8 +1172,224 @@ const GLOSSARY_FACTS = [
   { term: 'volunteer', definition: 'a person who gives time to a person or organisation without expecting payment', category: 'Australian Values' as const },
 ];
 
+const CEREMONY_FACTS = [
+  { prompt: 'What commitment does a person make when becoming an Australian citizen?', answer: 'They pledge loyalty to Australia and its people', category: 'Citizenship' as const },
+  { prompt: 'What does becoming an Australian citizen entitle a person to exercise?', answer: 'The rights and responsibilities of citizenship', category: 'Citizenship' as const },
+  { prompt: 'What happens if a citizenship test is passed and the application is approved?', answer: 'The person may receive an invitation to attend a citizenship ceremony', category: 'Citizenship' as const },
+  { prompt: 'What is usually held within six months after an approved applicant is invited?', answer: 'A citizenship ceremony', category: 'Citizenship' as const },
+  { prompt: 'What is the most important part of the citizenship ceremony?', answer: 'Making the Australian Citizenship Pledge', category: 'Citizenship' as const },
+  { prompt: 'When does a person become an Australian citizen at the ceremony?', answer: 'After making the pledge of commitment to Australia', category: 'Citizenship' as const },
+  { prompt: 'What may a person choose to omit from the Australian Citizenship Pledge?', answer: 'The words "under God"', category: 'Citizenship' as const },
+  { prompt: 'What document is received at a citizenship ceremony?', answer: 'A Certificate of Australian Citizenship', category: 'Citizenship' as const },
+  { prompt: 'What song is sung at Australian citizenship ceremonies?', answer: 'Advance Australia Fair', category: 'Symbols and Days' as const },
+  { prompt: 'Who may welcome attendees at the beginning of a citizenship ceremony?', answer: 'A representative of the Aboriginal and Torres Strait Islander people who are traditional owners of the land', category: 'Australia and its People' as const },
+  { prompt: 'What can new citizens bring to hold while making the Pledge?', answer: 'A holy book or scripture, if they choose', category: 'Citizenship' as const },
+  { prompt: 'Who makes short speeches about the meaning of citizenship at ceremonies?', answer: 'Community leaders or government representatives', category: 'Citizenship' as const },
+];
+
+const HISTORY_FACTS = [
+  { prompt: 'How many convict ships made up the First Fleet?', answer: '11 ships', category: 'Australia and its People' as const },
+  { prompt: 'Why did the British Government transport convicts to New South Wales?', answer: 'British jails could not hold the large number of imprisoned people', category: 'Australia and its People' as const },
+  { prompt: 'Where did early free settlers mainly come from?', answer: 'Great Britain and Ireland', category: 'Australia and its People' as const },
+  { prompt: 'What heritage had a major influence on Australia’s recent history, culture and politics?', answer: 'British and Irish heritage', category: 'Australia and its People' as const },
+  { prompt: 'What happened to Australia’s population in the 10 years after the gold rush began?', answer: 'It more than doubled', category: 'Australia and its People' as const },
+  { prompt: 'About how many people lived in Australia in 1901?', answer: 'About four million', category: 'Australia and its People' as const },
+  { prompt: 'Which peoples were not included in official population estimates in 1901?', answer: 'Aboriginal and Torres Strait Islander peoples', category: 'Australia and its People' as const },
+  { prompt: 'What did the 1967 Referendum allow regarding Aboriginal peoples?', answer: 'They could be counted in the Census', category: 'Government and Law' as const },
+  { prompt: 'What migration wave came after World War II?', answer: 'A wave of non-British migration from Europe', category: 'Australia and its People' as const },
+  { prompt: 'Why have people come to Australia through migration and refugee programs?', answer: 'To join family, make a new life, or escape poverty, war or persecution', category: 'Australia and its People' as const },
+  { prompt: 'What does Australia aim to build while celebrating diversity?', answer: 'A cohesive and unified nation', category: 'Australia and its People' as const },
+  { prompt: 'How many countries have people come from to make Australia their home?', answer: 'More than 200 countries', category: 'Australia and its People' as const },
+  { prompt: 'How many distinct Aboriginal and Torres Strait Islander languages are valued in Australia?', answer: 'More than 100', category: 'Australia and its People' as const },
+  { prompt: 'Where are Aboriginal people historically from?', answer: 'Mainland Australia and Tasmania', category: 'Australia and its People' as const },
+  { prompt: 'How old are Aboriginal and Torres Strait Islander cultures described as being?', answer: 'The oldest continuous cultures and traditions in the world', category: 'Australia and its People' as const },
+  { prompt: 'How is Indigenous peoples’ deep connection with land expressed?', answer: 'Through stories, art and dance', category: 'Australia and its People' as const },
+];
+
+const STATE_DETAIL_FACTS = [
+  { prompt: 'New South Wales', answer: 'It was the first colony established by the British', category: 'Australia and its People' as const },
+  { prompt: 'Sydney', answer: 'It is the nation’s largest city', category: 'Australia and its People' as const },
+  { prompt: 'Sydney Harbour Bridge and Opera House', answer: 'They are national icons', category: 'Symbols and Days' as const },
+  { prompt: 'Victoria', answer: 'It is the smallest mainland state', category: 'Australia and its People' as const },
+  { prompt: 'Melbourne Cricket Ground, the 12 Apostles and the Royal Exhibition Building', answer: 'They are icons of Victoria', category: 'Symbols and Days' as const },
+  { prompt: 'Queensland', answer: 'It is the second largest state', category: 'Australia and its People' as const },
+  { prompt: 'Great Barrier Reef', answer: 'It runs along Queensland’s eastern coast', category: 'Australia and its People' as const },
+  { prompt: 'Torres Strait Islands', answer: 'They lie to the north of Queensland', category: 'Australia and its People' as const },
+  { prompt: 'Western Australia', answer: 'It is the largest state', category: 'Australia and its People' as const },
+  { prompt: 'Ningaloo Coast, Margaret River and the Kimberley region', answer: 'They are icons of Western Australia', category: 'Symbols and Days' as const },
+  { prompt: 'South Australia', answer: 'It has a rugged coastline and many famous wine regions', category: 'Australia and its People' as const },
+  { prompt: 'Barossa Valley and the Flinders Ranges', answer: 'They are icons of South Australia', category: 'Symbols and Days' as const },
+  { prompt: 'Tasmania', answer: 'It is the smallest state and is separated from the mainland by Bass Strait', category: 'Australia and its People' as const },
+  { prompt: 'Cradle Mountain, Port Arthur and the Bay of Fires', answer: 'They are icons of Tasmania', category: 'Symbols and Days' as const },
+  { prompt: 'Australian Capital Territory', answer: 'It is located between Sydney and Melbourne', category: 'Australia and its People' as const },
+  { prompt: 'Parliament House and the High Court of Australia', answer: 'They are national institutions located in Canberra', category: 'Government and Law' as const },
+  { prompt: 'Northern Territory', answer: 'It has a tropical north and dry red desert in the south', category: 'Australia and its People' as const },
+  { prompt: 'Uluru, Kata Tjuta and Kings Canyon', answer: 'They are icons of the Northern Territory', category: 'Symbols and Days' as const },
+];
+
+const FLAG_SYMBOL_FACTS = [
+  { prompt: 'What colours are on the Australian National Flag?', answer: 'Blue, white and red', category: 'Symbols and Days' as const },
+  { prompt: 'What does the Union Jack on the Australian National Flag represent?', answer: 'British settlement and inherited laws and institutions', category: 'Symbols and Days' as const },
+  { prompt: 'What does each point of the Commonwealth Star represent?', answer: 'One point for each state and one point for the territories', category: 'Symbols and Days' as const },
+  { prompt: 'Where is the Commonwealth Star on the Australian National Flag?', answer: 'Under the Union Jack', category: 'Symbols and Days' as const },
+  { prompt: 'What colours are on the Australian Aboriginal Flag?', answer: 'Black, red and yellow', category: 'Symbols and Days' as const },
+  { prompt: 'What does the red part of the Australian Aboriginal Flag represent?', answer: 'The earth, which has ceremonial significance', category: 'Symbols and Days' as const },
+  { prompt: 'What colours are on the Torres Strait Islander Flag?', answer: 'Green, blue, black and white', category: 'Symbols and Days' as const },
+  { prompt: 'What do the green stripes on the Torres Strait Islander Flag represent?', answer: 'The land', category: 'Symbols and Days' as const },
+  { prompt: 'What does the blue panel on the Torres Strait Islander Flag represent?', answer: 'The sea', category: 'Symbols and Days' as const },
+  { prompt: 'What do the black lines on the Torres Strait Islander Flag represent?', answer: 'Torres Strait Islander people', category: 'Symbols and Days' as const },
+  { prompt: 'What do the points of the white star on the Torres Strait Islander Flag represent?', answer: 'The island groups in the Torres Strait', category: 'Symbols and Days' as const },
+  { prompt: 'What does white symbolise on the Torres Strait Islander Flag?', answer: 'Peace', category: 'Symbols and Days' as const },
+  { prompt: 'What does the Commonwealth Coat of Arms represent?', answer: 'National unity', category: 'Symbols and Days' as const },
+  { prompt: 'What does the Commonwealth Coat of Arms identify?', answer: 'The authority and property of the Commonwealth of Australia', category: 'Symbols and Days' as const },
+  { prompt: 'What does the shield on the Commonwealth Coat of Arms represent?', answer: 'The six states and federation', category: 'Symbols and Days' as const },
+  { prompt: 'Which animals support the shield on the Commonwealth Coat of Arms?', answer: 'A kangaroo and an emu', category: 'Symbols and Days' as const },
+  { prompt: 'What sits above the shield on the Commonwealth Coat of Arms?', answer: 'A gold Commonwealth Star', category: 'Symbols and Days' as const },
+  { prompt: 'What is in the background of the Commonwealth Coat of Arms?', answer: 'The golden wattle', category: 'Symbols and Days' as const },
+  { prompt: 'Where does the golden wattle grow mainly?', answer: 'South-eastern Australia', category: 'Symbols and Days' as const },
+  { prompt: 'When does the golden wattle have many golden yellow flowers?', answer: 'In spring', category: 'Symbols and Days' as const },
+  { prompt: 'What colours are usually worn by Australian national sports teams?', answer: 'Green and gold', category: 'Symbols and Days' as const },
+];
+
+const GOVERNMENT_DEEP_FACTS = [
+  { prompt: 'What must citizens aged 18 or over do before voting?', answer: 'Enrol to vote', category: 'Government and Law' as const },
+  { prompt: 'What can happen if a person does not vote without a good reason?', answer: 'They may have to pay a fine', category: 'Government and Law' as const },
+  { prompt: 'Who can influence decisions of the Australian Electoral Commission?', answer: 'No political parties or people in government can influence it', category: 'Government and Law' as const },
+  { prompt: 'What can citizens do to raise concerns about government policy?', answer: 'Contact their elected representative', category: 'Government and Law' as const },
+  { prompt: 'What did each colony have before Federation?', answer: 'Its own constitution and laws', category: 'Government and Law' as const },
+  { prompt: 'What difficulties existed between colonies before Federation?', answer: 'Trade and transport were expensive and slow, enforcing law across borders was difficult, and defence was weak', category: 'Government and Law' as const },
+  { prompt: 'What helped Australia’s national identity form before Federation?', answer: 'Sporting teams and Australian culture in songs, poems, stories and art', category: 'Australia and its People' as const },
+  { prompt: 'What Act is Australia’s Constitution?', answer: 'The Commonwealth of Australia Constitution Act 1900', category: 'Government and Law' as const },
+  { prompt: 'When did the Australian Constitution come into effect?', answer: '1 January 1901', category: 'Government and Law' as const },
+  { prompt: 'What did the Australian Constitution establish?', answer: 'The Parliament of the Commonwealth of Australia and the High Court of Australia', category: 'Government and Law' as const },
+  { prompt: 'What ultimate power does the High Court of Australia have?', answer: 'To apply and interpret the laws of Australia', category: 'Government and Law' as const },
+  { prompt: 'What is the purpose of dividing government power?', answer: 'To stop one person or group from holding all the power', category: 'Government and Law' as const },
+  { prompt: 'What are the three powers divided by the Constitution?', answer: 'Legislative, executive and judicial powers', category: 'Government and Law' as const },
+  { prompt: 'Who appoints the Governor-General?', answer: 'The King of Australia, on advice from the Australian Prime Minister', category: 'Government and Law' as const },
+  { prompt: 'Does the King have a day-to-day role in Australian government?', answer: 'No', category: 'Government and Law' as const },
+  { prompt: 'Who represents the King in each state?', answer: 'A Governor', category: 'Government and Law' as const },
+  { prompt: 'Who represents the Governor-General in the Northern Territory?', answer: 'An Administrator appointed by the Governor-General', category: 'Government and Law' as const },
+  { prompt: 'Do states and territories have the same constitutional rights?', answer: 'No, states have rights recognised by the Constitution while territories do not', category: 'Government and Law' as const },
+  { prompt: 'Can self-governing territory laws be altered by the Australian Government?', answer: 'Yes, they can be altered or revoked by the Australian Government', category: 'Government and Law' as const },
+  { prompt: 'What is the Opposition after a federal election?', answer: 'The party or coalition with the second largest number of members in the House of Representatives', category: 'Government and Law' as const },
+  { prompt: 'What is the Cabinet?', answer: 'The key decision making body of government', category: 'Government and Law' as const },
+  { prompt: 'Who approves the appointment of the Prime Minister and ministers?', answer: 'The Governor-General', category: 'Government and Law' as const },
+  { prompt: 'What do ministers with the most important portfolios make up?', answer: 'The Cabinet', category: 'Government and Law' as const },
+  { prompt: 'Can courts base decisions on anything other than evidence before them?', answer: 'No, courts can only base decisions on the evidence before them', category: 'Government and Law' as const },
+  { prompt: 'Who is the highest authority in a court?', answer: 'The judge or magistrate', category: 'Government and Law' as const },
+  { prompt: 'Can government remove judges because it disagrees with their decisions?', answer: 'No', category: 'Government and Law' as const },
+  { prompt: 'Who explains the law to a jury?', answer: 'The judge', category: 'Government and Law' as const },
+  { prompt: 'If a jury finds a person guilty in a criminal trial, who decides the penalty?', answer: 'The judge', category: 'Government and Law' as const },
+  { prompt: 'What do state and Northern Territory police forces deal with?', answer: 'Crimes under state and territory laws', category: 'Government and Law' as const },
+  { prompt: 'What crimes does the Australian Federal Police investigate?', answer: 'Crimes against federal laws', category: 'Government and Law' as const },
+  { prompt: 'Where is the AFP responsible for general police work?', answer: 'The Australian Capital Territory', category: 'Government and Law' as const },
+];
+
+const GOVERNOR_GENERAL_DUTIES = [
+  'signing Bills passed by the Australian Parliament into law',
+  'performing ceremonial duties',
+  'approving the appointment of the Australian Government and its ministers, federal judges and other officials',
+  'starting the process for a federal election',
+  'acting as Commander-in-Chief of the Australian Defence Force',
+];
+
+const RIGHTS_RESPONSIBILITY_FACTS = [
+  { prompt: 'What are representatives in parliament accountable for?', answer: 'The decisions they make, through elections', category: 'Democratic Beliefs' as const },
+  { prompt: 'Who must obey Australian laws under the Rule of Law?', answer: 'Everyone, including government, community and religious leaders, business people and police', category: 'Australian Values' as const },
+  { prompt: 'What does freedom of expression include?', answer: 'Expressing views through art, film, music and literature', category: 'Democratic Beliefs' as const },
+  { prompt: 'Where are people free to meet for social or political discussion?', answer: 'In public or private places', category: 'Democratic Beliefs' as const },
+  { prompt: 'What must protests always be?', answer: 'Peaceful and within the law', category: 'Australian Values' as const },
+  { prompt: 'What kinds of organisations can people legally join?', answer: 'Political parties, trade unions, religious, cultural or social groups', category: 'Democratic Beliefs' as const },
+  { prompt: 'What does the government and law do regarding citizens of different religions?', answer: 'Treat all citizens equally', category: 'Australian Values' as const },
+  { prompt: 'Why do Australians value a fair go?', answer: 'So achievements come from talents, work and effort rather than wealth or background', category: 'Australian Values' as const },
+  { prompt: 'What do Australian citizens have by voting?', answer: 'A say in how Australia is governed and a contribution to its future', category: 'Citizenship' as const },
+  { prompt: 'Is service in the Australian Defence Force voluntary?', answer: 'Yes', category: 'Citizenship' as const },
+  { prompt: 'Who can be called to serve on a jury?', answer: 'Australian citizens on the electoral roll', category: 'Citizenship' as const },
+  { prompt: 'Why is jury service important?', answer: 'It helps ensure the court system is open and fair', category: 'Citizenship' as const },
+  { prompt: 'Who can seek election to parliament?', answer: 'Australian citizens aged 18 or over who are not dual citizens', category: 'Citizenship' as const },
+  { prompt: 'What must Australian citizens obey when overseas?', answer: 'The laws of the country they are in', category: 'Citizenship' as const },
+  { prompt: 'What can Australian officials overseas help with?', answer: 'Emergency passports and support in accidents, serious illness or death', category: 'Citizenship' as const },
+];
+
+const LAW_OFFENCE_FACTS = [
+  { prompt: 'Is not knowing Australian law an excuse for breaking it?', answer: 'No', category: 'Government and Law' as const },
+  { prompt: 'What may happen if you break an Australian law you did not know about?', answer: 'You could be charged', category: 'Government and Law' as const },
+  { prompt: 'Name a serious crime listed in the booklet.', answer: 'Murder, assault, sexual assault, violence, armed robbery, theft, child sexual offences, dangerous driving, illegal drugs or fraud', category: 'Government and Law' as const },
+  { prompt: 'Is domestic and family violence accepted in Australia?', answer: 'No, it is against the law', category: 'Australian Values' as const },
+  { prompt: 'Can domestic and family violence include threats?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Can domestic and family violence include isolating a family member from friends and family?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Can domestic and family violence include threatening children or pets?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'What should a person do if they or someone they know is in danger?', answer: 'Contact the police', category: 'Australian Values' as const },
+  { prompt: 'Who controls road and traffic rules?', answer: 'State and territory governments', category: 'Government and Law' as const },
+  { prompt: 'What must everybody travelling in a car wear?', answer: 'A seatbelt', category: 'Government and Law' as const },
+  { prompt: 'What must babies and young children use in cars?', answer: 'An approved car seat', category: 'Government and Law' as const },
+  { prompt: 'Is it legal to drive after taking drugs?', answer: 'No', category: 'Government and Law' as const },
+  { prompt: 'Is it legal to drive above the blood alcohol limit?', answer: 'No', category: 'Government and Law' as const },
+];
+
+const VALUES_SCENARIO_FACTS = [
+  { prompt: 'A person wants to peacefully criticise a government decision while obeying the law. Is this consistent with Australian values?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'A person promotes violence against a group because of their religion. Is this acceptable in Australia?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'A person makes false allegations or encourages others to break the law. Is this protected as acceptable speech?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'A person wants to leave a legal social group. Can they be forced to stay?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'A religious practice conflicts with Australian law. Which must be followed?', answer: 'Australian law', category: 'Australian Values' as const },
+  { prompt: 'Is polygamy legal in Australia?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'Is forced marriage legal in Australia?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'Should people receive preferential treatment under Australian law because of their background?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'Can two people marry each other in Australia, including two men or two women?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Can both men and women vote, stand for parliament, join the Australian Defence Force and police, and be treated equally in court?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Should a woman get a job ahead of a man if she has better qualifications and skills?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Can either a husband or wife apply for divorce?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Is verbal abuse a form of violence that is illegal?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'What is the age of sexual consent in Australia according to the booklet?', answer: '16 or 17 depending on the state or territory', category: 'Australian Values' as const },
+  { prompt: 'Should lawful actions of police be supported?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Should a lawful request from police be obeyed?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Is creating or sharing racially offensive material online acceptable?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'Is making racially abusive comments at a sporting event acceptable?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'Is volunteering described as a way to learn skills and strengthen belonging?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'What should a person do if they know a child is being abused?', answer: 'Report it to the police to investigate', category: 'Australian Values' as const },
+  { prompt: 'Is sharing sexual photos or videos online without consent an example of cyber abuse?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Is stalking a person online an example of cyber abuse?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Can Australian citizens hold citizenship of another country if that country allows it?', answer: 'Yes', category: 'Australian Values' as const },
+  { prompt: 'Is using social media to share official government secrets consistent with Australian obligations?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'Is promoting distrust and fear of an ethnic community consistent with Australian values?', answer: 'No', category: 'Australian Values' as const },
+  { prompt: 'What did multicultural communities do during the 2019-20 bushfire crisis example?', answer: 'Collected donations and supported affected communities and firefighters', category: 'Australian Values' as const },
+];
+
+const ANTHEM_FACTS = [
+  { prompt: 'According to the anthem, what is Australia girt by?', answer: 'Sea', category: 'Symbols and Days' as const },
+  { prompt: 'Which constellation is named in Advance Australia Fair?', answer: 'The Southern Cross', category: 'Symbols and Days' as const },
+  { prompt: 'What does the anthem say Australia has to share for those who have come across the seas?', answer: 'Boundless plains', category: 'Symbols and Days' as const },
+  { prompt: 'What words begin the national anthem in the booklet?', answer: 'Australians all let us rejoice', category: 'Symbols and Days' as const },
+  { prompt: 'On what occasions is Advance Australia Fair sung?', answer: 'Occasions of national importance, citizenship ceremonies and major sporting events', category: 'Symbols and Days' as const },
+];
+
 function otherOptions(correct: string, pool: string[], count = 3) {
   return pool.filter((item) => item !== correct).slice(0, count);
+}
+
+function makeFactQuestions(prefix: string, facts: Array<{ prompt: string; answer: string; category: QuestionCategory }>): Question[] {
+  const answerPool = facts.map((fact) => fact.answer);
+  return facts.flatMap((fact, index) => [
+    {
+      id: `${prefix}-${index + 1}-direct`,
+      category: fact.category,
+      prompt: fact.prompt,
+      options: [fact.answer, ...otherOptions(fact.answer, answerPool)],
+      answerIndex: 0,
+      explanation: fact.answer,
+      valuesQuestion: fact.category === 'Australian Values',
+    },
+    {
+      id: `${prefix}-${index + 1}-reverse`,
+      category: fact.category,
+      prompt: `Which statement matches this official booklet fact: "${fact.answer}"?`,
+      options: [fact.prompt, ...otherOptions(fact.prompt, facts.map((item) => item.prompt))],
+      answerIndex: 0,
+      explanation: `${fact.prompt} ${fact.answer}.`,
+      valuesQuestion: fact.category === 'Australian Values',
+    },
+  ]);
 }
 
 const CAPITAL_QUESTIONS: Question[] = CAPITAL_FACTS.flatMap((fact, index) => [
@@ -1234,10 +1450,43 @@ const GLOSSARY_QUESTIONS: Question[] = GLOSSARY_FACTS.flatMap((fact, index) => [
   },
 ]);
 
+const GOVERNOR_GENERAL_QUESTIONS: Question[] = GOVERNOR_GENERAL_DUTIES.flatMap((duty, index) => [
+  {
+    id: `governor-general-duty-${index + 1}`,
+    category: 'Government and Law',
+    prompt: 'Which of these is a role of the Governor-General?',
+    options: [duty, ...otherOptions(duty, GOVERNOR_GENERAL_DUTIES)],
+    answerIndex: 0,
+    explanation: `The Governor-General's role includes ${duty}.`,
+  },
+  {
+    id: `governor-general-not-duty-${index + 1}`,
+    category: 'Government and Law',
+    prompt: `Who has the role of ${duty}?`,
+    options: ['The Governor-General', 'The Leader of the Opposition', 'A local mayor', 'The Australian Electoral Commission'],
+    answerIndex: 0,
+    explanation: `This is listed as a role of the Governor-General.`,
+  },
+]);
+
+const DEEP_FACT_QUESTIONS: Question[] = [
+  ...makeFactQuestions('ceremony', CEREMONY_FACTS),
+  ...makeFactQuestions('history', HISTORY_FACTS),
+  ...makeFactQuestions('state-detail', STATE_DETAIL_FACTS),
+  ...makeFactQuestions('flag-symbol', FLAG_SYMBOL_FACTS),
+  ...makeFactQuestions('government-deep', GOVERNMENT_DEEP_FACTS),
+  ...makeFactQuestions('rights-responsibility', RIGHTS_RESPONSIBILITY_FACTS),
+  ...makeFactQuestions('law-offence', LAW_OFFENCE_FACTS),
+  ...makeFactQuestions('values-scenario', VALUES_SCENARIO_FACTS),
+  ...makeFactQuestions('anthem', ANTHEM_FACTS),
+];
+
 export const QUESTIONS: Question[] = [
   ...CORE_QUESTIONS,
   ...CAPITAL_QUESTIONS,
   ...ROLE_QUESTIONS,
   ...RESPONSIBILITY_QUESTIONS,
   ...GLOSSARY_QUESTIONS,
+  ...GOVERNOR_GENERAL_QUESTIONS,
+  ...DEEP_FACT_QUESTIONS,
 ];

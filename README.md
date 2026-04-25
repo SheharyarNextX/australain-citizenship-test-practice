@@ -2,8 +2,8 @@
 
 React Native / Expo web practice app for the Australian citizenship test.
 
-- 262 multiple-choice questions built from the official testable section of *Australian Citizenship: Our Common Bond*
-- 54 Australian values questions
+- 586 multiple-choice questions built from the official testable section of *Australian Citizenship: Our Common Bond*
+- 124 Australian values questions
 - 20-question practice-test mode with instant feedback
 - Full-bank mode for studying every question
 - Results screen with repeat and review flow
