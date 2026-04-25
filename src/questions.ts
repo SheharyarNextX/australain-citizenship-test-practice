@@ -22,6 +22,7 @@ export const PRACTICE_TEST_SIZE = 20;
 export const REQUIRED_VALUES_CORRECT = 5;
 export const OFFICIAL_SOURCE_URL =
   'https://immi.homeaffairs.gov.au/citizenship/test-and-interview/our-common-bond';
+export const OFFICIAL_PRACTICE_TEST_URL = 'https://citizenshippracticetest.homeaffairs.gov.au/';
 
 const CORE_QUESTIONS: Question[] = [
   {
@@ -1370,26 +1371,18 @@ function otherOptions(correct: string, pool: string[], count = 3) {
 
 function makeFactQuestions(prefix: string, facts: Array<{ prompt: string; answer: string; category: QuestionCategory }>): Question[] {
   const answerPool = facts.map((fact) => fact.answer);
-  return facts.flatMap((fact, index) => [
-    {
+  return facts.map((fact, index) => {
+    const prompt = fact.prompt.endsWith('?') ? fact.prompt : `Which statement about ${fact.prompt} is correct?`;
+    return {
       id: `${prefix}-${index + 1}-direct`,
       category: fact.category,
-      prompt: fact.prompt,
+      prompt,
       options: [fact.answer, ...otherOptions(fact.answer, answerPool)],
       answerIndex: 0,
       explanation: fact.answer,
       valuesQuestion: fact.category === 'Australian Values',
-    },
-    {
-      id: `${prefix}-${index + 1}-reverse`,
-      category: fact.category,
-      prompt: `Which statement matches this official booklet fact: "${fact.answer}"?`,
-      options: [fact.prompt, ...otherOptions(fact.prompt, facts.map((item) => item.prompt))],
-      answerIndex: 0,
-      explanation: `${fact.prompt} ${fact.answer}.`,
-      valuesQuestion: fact.category === 'Australian Values',
-    },
-  ]);
+    };
+  });
 }
 
 const CAPITAL_QUESTIONS: Question[] = CAPITAL_FACTS.flatMap((fact, index) => [
@@ -1481,8 +1474,180 @@ const DEEP_FACT_QUESTIONS: Question[] = [
   ...makeFactQuestions('anthem', ANTHEM_FACTS),
 ];
 
+const OFFICIAL_STYLE_QUESTIONS: Question[] = [
+  {
+    id: 'official-style-01',
+    category: 'Symbols and Days',
+    prompt: 'Anzac Day is a day when Australians remember',
+    options: ['people who served and died in wars, conflicts and peacekeeping', 'the first federal election', 'the start of the gold rush'],
+    answerIndex: 0,
+    explanation: 'Anzac Day commemorates Australians who served and died in wars, conflicts and peacekeeping operations.',
+  },
+  {
+    id: 'official-style-02',
+    category: 'Symbols and Days',
+    prompt: 'Which colours are on the Australian Aboriginal Flag?',
+    options: ['Black, red and yellow', 'Green, blue and white', 'Blue, white and red'],
+    answerIndex: 0,
+    explanation: 'The Australian Aboriginal Flag is black, red and yellow.',
+  },
+  {
+    id: 'official-style-03',
+    category: 'Australia and its People',
+    prompt: 'Australia’s capital city is',
+    options: ['Canberra', 'Sydney', 'Perth'],
+    answerIndex: 0,
+    explanation: 'Canberra is Australia’s capital city.',
+  },
+  {
+    id: 'official-style-04',
+    category: 'Australia and its People',
+    prompt: 'The separate colonies became one Australian nation in',
+    options: ['1901', '1788', '1967'],
+    answerIndex: 0,
+    explanation: 'The colonies united into the Commonwealth of Australia in 1901.',
+  },
+  {
+    id: 'official-style-05',
+    category: 'Australia and its People',
+    prompt: 'A Welcome to Country can be delivered by',
+    options: ['an Aboriginal or Torres Strait Islander custodian of the local region', 'any person attending an event', 'only the Prime Minister'],
+    answerIndex: 0,
+    explanation: 'A Welcome to Country is performed by an Aboriginal or Torres Strait Islander custodian.',
+  },
+  {
+    id: 'official-style-06',
+    category: 'Democratic Beliefs',
+    prompt: 'Which statement is correct under Australian law?',
+    options: ['Men and women have equal rights', 'Men have more rights than women', 'Women have more rights than men'],
+    answerIndex: 0,
+    explanation: 'Men and women have equal rights in Australia.',
+    valuesQuestion: true,
+  },
+  {
+    id: 'official-style-07',
+    category: 'Democratic Beliefs',
+    prompt: 'Freedom of speech means people may',
+    options: ['say what they think about politics while obeying the law', 'ignore Australian laws when speaking', 'force others to agree with them'],
+    answerIndex: 0,
+    explanation: 'People can discuss ideas and criticise government as long as Australian laws are obeyed.',
+    valuesQuestion: true,
+  },
+  {
+    id: 'official-style-08',
+    category: 'Democratic Beliefs',
+    prompt: 'In Australia, government is',
+    options: ['separate from religion', 'controlled by one official religion', 'able to tell everyone which religion to follow'],
+    answerIndex: 0,
+    explanation: 'Australia has a secular government and no official national religion.',
+    valuesQuestion: true,
+  },
+  {
+    id: 'official-style-09',
+    category: 'Citizenship',
+    prompt: 'Australian citizens aged 18 or over must',
+    options: ['vote in Australian elections', 'join the Australian Defence Force', 'attend every local council meeting'],
+    answerIndex: 0,
+    explanation: 'Voting is compulsory for Australian citizens aged 18 years or over in federal and state or territory elections.',
+  },
+  {
+    id: 'official-style-10',
+    category: 'Citizenship',
+    prompt: 'Which statement about Australian passports is true?',
+    options: ['Australian citizens can apply for an Australian passport', 'Permanent residents automatically receive an Australian passport', 'Australian citizens need a visa to re-enter Australia'],
+    answerIndex: 0,
+    explanation: 'Australian citizens can apply for an Australian passport and re-enter Australia freely.',
+  },
+  {
+    id: 'official-style-11',
+    category: 'Government and Law',
+    prompt: 'In Australian elections, voters are',
+    options: ['free and safe to vote for any candidate', 'required to tell police who they voted for', 'required to write their name on the ballot paper'],
+    answerIndex: 0,
+    explanation: 'Voting is by secret ballot, so voters are free and safe to vote for any candidate.',
+  },
+  {
+    id: 'official-style-12',
+    category: 'Government and Law',
+    prompt: 'The Australian Constitution is a document that',
+    options: ['sets out the basic rules for government', 'contains the rules of one religion', 'can never be changed'],
+    answerIndex: 0,
+    explanation: 'The Australian Constitution sets out the basic rules for the government of Australia.',
+  },
+  {
+    id: 'official-style-13',
+    category: 'Government and Law',
+    prompt: 'A referendum in Australia is a vote about changing',
+    options: ['the Australian Constitution', 'the national anthem', 'the Prime Minister'],
+    answerIndex: 0,
+    explanation: 'A referendum is a vote on a proposed change to the Australian Constitution.',
+  },
+  {
+    id: 'official-style-14',
+    category: 'Government and Law',
+    prompt: 'The Australian Parliament has the power to',
+    options: ['make and change laws', 'control judges', 'choose voters'],
+    answerIndex: 0,
+    explanation: 'Parliament has legislative power, which is the power to make and change laws.',
+  },
+  {
+    id: 'official-style-15',
+    category: 'Government and Law',
+    prompt: 'The Governor-General represents',
+    options: ['the Head of State, the King of Australia', 'a political party', 'the Leader of the Opposition'],
+    answerIndex: 0,
+    explanation: 'The Governor-General represents the Head of State in Australia.',
+  },
+  {
+    id: 'official-style-16',
+    category: 'Australian Values',
+    prompt: 'Freedom of speech is important because it',
+    options: ['underpins Australia’s democratic system', 'means people do not need to obey the law', 'is not an Australian value'],
+    answerIndex: 0,
+    explanation: 'Freedom of speech is a core Australian value and underpins the democratic system.',
+    valuesQuestion: true,
+  },
+  {
+    id: 'official-style-17',
+    category: 'Australian Values',
+    prompt: 'Learning English helps people in Australia',
+    options: ['get an education, find work and participate in the community', 'avoid Australian law', 'replace every other language'],
+    answerIndex: 0,
+    explanation: 'English helps people participate economically and socially in Australia.',
+    valuesQuestion: true,
+  },
+  {
+    id: 'official-style-18',
+    category: 'Australian Values',
+    prompt: 'Violence against another person in Australia is',
+    options: ['never acceptable and is against the law', 'acceptable when people disagree', 'acceptable against people of another religion'],
+    answerIndex: 0,
+    explanation: 'Violence of any kind is illegal and not accepted in Australia.',
+    valuesQuestion: true,
+  },
+  {
+    id: 'official-style-19',
+    category: 'Australian Values',
+    prompt: 'Mutual respect and tolerance means people can',
+    options: ['peacefully disagree with each other', 'use intimidation to win arguments', 'only respect people with the same beliefs'],
+    answerIndex: 0,
+    explanation: 'Australians value peaceful disagreement, mutual respect and tolerance.',
+    valuesQuestion: true,
+  },
+  {
+    id: 'official-style-20',
+    category: 'Australian Values',
+    prompt: 'Volunteering is valued because it',
+    options: ['strengthens the community', 'is compulsory by law', 'always earns a lot of money'],
+    answerIndex: 0,
+    explanation: 'Volunteering helps people look out for each other and strengthen the community.',
+    valuesQuestion: true,
+  },
+];
+
 export const QUESTIONS: Question[] = [
   ...CORE_QUESTIONS,
+  ...OFFICIAL_STYLE_QUESTIONS,
   ...CAPITAL_QUESTIONS,
   ...ROLE_QUESTIONS,
   ...RESPONSIBILITY_QUESTIONS,

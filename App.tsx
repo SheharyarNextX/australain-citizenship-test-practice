@@ -73,9 +73,19 @@ function shuffle<T>(items: T[]): T[] {
   return copy;
 }
 
+function shuffleOptions(question: Question): Question {
+  const correctOption = question.options[question.answerIndex];
+  const shuffledOptions = shuffle(question.options);
+  return {
+    ...question,
+    options: shuffledOptions,
+    answerIndex: shuffledOptions.indexOf(correctOption),
+  };
+}
+
 function buildQuestionSet(mode: Mode): Question[] {
   if (mode === 'all') {
-    return shuffle(QUESTIONS);
+    return shuffle(QUESTIONS).map(shuffleOptions);
   }
 
   const values = shuffle(QUESTIONS.filter((question) => question.valuesQuestion)).slice(0, REQUIRED_VALUES_CORRECT);
@@ -84,7 +94,7 @@ function buildQuestionSet(mode: Mode): Question[] {
     PRACTICE_TEST_SIZE - REQUIRED_VALUES_CORRECT,
   );
 
-  return shuffle([...values, ...general]);
+  return shuffle([...values, ...general]).map(shuffleOptions);
 }
 
 function percent(score: number, total: number) {
