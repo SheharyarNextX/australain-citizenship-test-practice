@@ -31,7 +31,14 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "react-native-google-mobile-ads",
+        {
+          "iosAppId": "ca-app-pub-6353513768874790~2033705389",
+          "androidAppId": "ca-app-pub-6353513768874790~6432949547"
+        }
+      ]
     ]
   }
 }

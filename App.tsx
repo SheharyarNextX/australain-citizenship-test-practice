@@ -8,9 +8,10 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Linking,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -27,15 +28,18 @@ import {
   QuestionCategory,
   REQUIRED_VALUES_CORRECT,
 } from './src/questions';
+import { createRewardedAdsController, type RewardedAdsController } from './src/mobileAds';
 
 type Mode = 'test' | 'all';
 type Phase = 'intro' | 'quiz' | 'results';
+type AdState = 'idle' | 'loading' | 'showing' | 'unavailable';
 type StoredBest = {
   bestScore: number;
   attempts: number;
 };
 
 const STORAGE_KEY = 'australain-citizenship-practice-v1';
+const AD_FREQUENCY = 8;
 
 const COLORS = {
   background: '#F4F7FB',
@@ -108,6 +112,12 @@ function percent(score: number, total: number) {
   return total === 0 ? 0 : Math.round((score / total) * 100);
 }
 
+function delay(milliseconds: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
 function categoryCounts() {
   return CATEGORY_ORDER.map((category) => ({
     category,
@@ -128,6 +138,8 @@ export default function App() {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [best, setBest] = useState<StoredBest>({ bestScore: 0, attempts: 0 });
+  const [adState, setAdState] = useState<AdState>('idle');
+  const adControllerRef = useRef<RewardedAdsController | null>(null);
 
   useEffect(() => {
     AsyncStorage.getItem(STORAGE_KEY)
@@ -137,6 +149,26 @@ export default function App() {
         }
       })
       .catch(() => undefined);
+  }, []);
+
+  useEffect(() => {
+    const controller = createRewardedAdsController({
+      onClosed: () => setAdState('idle'),
+      onError: () => setAdState('unavailable'),
+      onLoaded: () => setAdState('idle'),
+    });
+    adControllerRef.current = controller;
+
+    if (!controller) {
+      setAdState(Platform.OS === 'web' ? 'idle' : 'unavailable');
+      return undefined;
+    }
+
+    setAdState('loading');
+
+    return () => {
+      controller.destroy();
+    };
   }, []);
 
   const current = quiz[index];
@@ -158,7 +190,36 @@ export default function App() {
     finalPercent >= PASS_MARK &&
     (mode === 'all' || valuesCorrect === REQUIRED_VALUES_CORRECT);
 
-  const startQuiz = (nextMode: Mode = mode) => {
+  const showRewardedAd = () =>
+    new Promise<void>(async (resolve) => {
+      let controller = adControllerRef.current;
+
+      if (Platform.OS === 'web' || !controller) {
+        resolve();
+        return;
+      }
+
+      for (let attempt = 0; attempt < 40 && !controller.isLoaded(); attempt += 1) {
+        await delay(250);
+        controller = adControllerRef.current;
+        if (!controller) {
+          resolve();
+          return;
+        }
+      }
+
+      if (!controller.isLoaded()) {
+        resolve();
+        return;
+      }
+
+      setAdState('showing');
+      await controller.showAd();
+      resolve();
+    });
+
+  const startQuiz = async (nextMode: Mode = mode) => {
+    await showRewardedAd();
     setMode(nextMode);
     setQuiz(buildQuestionSet(nextMode));
     setAnswers({});
@@ -183,10 +244,13 @@ export default function App() {
     setAnswers((previous) => ({ ...previous, [current.id]: answerIndex }));
   };
 
-  const goNext = () => {
+  const goNext = async () => {
     if (index + 1 >= quiz.length) {
       void finishQuiz();
       return;
+    }
+    if ((index + 1) % AD_FREQUENCY === 0) {
+      await showRewardedAd();
     }
     setIndex((value) => value + 1);
   };
@@ -248,10 +312,21 @@ export default function App() {
               />
             </View>
 
-            <Pressable style={styles.primaryButton} onPress={() => startQuiz()}>
+            <Pressable
+              style={[styles.primaryButton, adState === 'showing' && styles.nextButtonDisabled]}
+              disabled={adState === 'showing'}
+              onPress={() => startQuiz()}
+            >
               <MaterialIcons name="play-arrow" size={22} color={COLORS.white} />
               <Text style={styles.primaryButtonText}>Start practice</Text>
             </Pressable>
+            {adState !== 'idle' && Platform.OS !== 'web' && (
+              <Text style={styles.adStatus}>
+                {adState === 'loading' && 'Preparing rewarded ad...'}
+                {adState === 'showing' && 'Rewarded ad is opening...'}
+                {adState === 'unavailable' && 'Rewarded ad is not available yet. Practice will continue.'}
+              </Text>
+            )}
 
             <View style={styles.card}>
               <Text style={styles.cardTitle}>Question coverage</Text>
@@ -343,7 +418,11 @@ export default function App() {
             </ScrollView>
 
             <View style={styles.footer}>
-              <Pressable style={[styles.nextButton, !answered && styles.nextButtonDisabled]} disabled={!answered} onPress={goNext}>
+              <Pressable
+                style={[styles.nextButton, (!answered || adState === 'showing') && styles.nextButtonDisabled]}
+                disabled={!answered || adState === 'showing'}
+                onPress={goNext}
+              >
                 <Text style={styles.nextButtonText}>{index + 1 >= quiz.length ? 'See results' : 'Next question'}</Text>
                 <MaterialIcons name="arrow-forward" size={20} color={COLORS.white} />
               </Pressable>
@@ -372,7 +451,11 @@ export default function App() {
             </View>
 
             <View style={styles.actionGrid}>
-              <Pressable style={styles.primaryButton} onPress={() => startQuiz(mode)}>
+              <Pressable
+                style={[styles.primaryButton, adState === 'showing' && styles.nextButtonDisabled]}
+                disabled={adState === 'showing'}
+                onPress={() => startQuiz(mode)}
+              >
                 <MaterialIcons name="replay" size={22} color={COLORS.white} />
                 <Text style={styles.primaryButtonText}>Repeat</Text>
               </Pressable>
@@ -596,6 +679,14 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontFamily: 'PublicSans_700Bold',
     fontSize: 16,
+  },
+  adStatus: {
+    color: COLORS.muted,
+    fontFamily: 'PublicSans_500Medium',
+    fontSize: 13,
+    lineHeight: 18,
+    textAlign: 'center',
+    marginTop: -6,
   },
   secondaryButton: {
     minHeight: 54,
